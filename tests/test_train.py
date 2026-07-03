@@ -26,3 +26,12 @@ def test_run_training_can_write_metrics_file(tmp_path: Path):
     assert np.isclose(saved["final_loss"], result.loss_history[-1])
     assert np.isclose(saved["weight"], result.weight)
     assert np.isclose(saved["bias"], result.bias)
+
+
+def test_run_training_rejects_non_positive_epochs():
+    try:
+        run_training(epochs=0)
+    except ValueError as exc:
+        assert "epochs must be positive" in str(exc)
+    else:
+        raise AssertionError("run_training should reject non-positive epoch counts")

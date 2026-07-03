@@ -2,6 +2,11 @@ name: Tiny Train
 
 on:
   workflow_dispatch:
+    inputs:
+      epochs:
+        description: Number of training epochs for the toy run
+        required: true
+        default: "10"
   push:
     branches:
       - main
@@ -28,7 +33,9 @@ jobs:
         run: pytest -q
 
       - name: Train tiny model
-        run: python -m tiny_train.train --epochs 10 --learning-rate 0.1 --output artifacts/metrics.json
+        env:
+          EPOCHS: ${{ github.event.inputs.epochs || '10' }}
+        run: python -m tiny_train.train --epochs "$EPOCHS" --learning-rate 0.1 --output artifacts/metrics.json
 
       - name: Upload metrics artifact
         uses: actions/upload-artifact@v4

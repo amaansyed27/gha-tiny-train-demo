@@ -21,6 +21,9 @@ def run_training(
     learning_rate: float = 0.1,
     output_path: Path | None = None,
 ) -> TrainingResult:
+    if epochs <= 0:
+        raise ValueError("epochs must be positive")
+
     x = np.array([0.0, 1.0, 2.0, 3.0], dtype=np.float64)
     y = 2.0 * x + 1.0
 
